@@ -13,6 +13,16 @@ const formatTime = (time) => {
   return `${hours.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}:${segs.toString().padStart(2, '0')}:${hundredths.toString().padStart(2, '0')}`
 }
 
+const addMarkToList = (markIndex, markTime) => {
+  marksList.innerHTML += `<p>Marca: ${markIndex}: 
+    ${formatTime(markTime)}</p>`
+}
+
+const markTime = () => {
+  marks.push(timer);
+  addMarkToList(marks.length, timer)
+}
+
 const ligaOtimer = () => {
   const btn = document.getElementById('play-pause');
   const action = btn.getAttribute('action');
@@ -32,8 +42,22 @@ const ligaOtimer = () => {
   }
 }
 
+
+const resetTime = () => {
+  clearInterval(intervalId);
+  timer = 0
+  marks = [];
+  setTimer(timer)
+  marksList.innerHTML = '';
+  const btn = document.getElementById('play-pause');
+  btn.getAttribute('action', 'start');
+  btn.innerHTML = '<i class="fa-solid fa-play"></i>'
+}
+
 const setTimer = (time) => {
   timerEl.innerHTML = formatTime(time);
 }
 
-document.getElementById('play-pause').addEventListener("click", ligaOtimer)
+document.getElementById('play-pause').addEventListener("click", ligaOtimer);
+document.getElementById('mark').addEventListener("click", markTime);
+document.getElementById('reset').addEventListener("click", resetTime);
